@@ -39,7 +39,7 @@ public class ACMQR extends JFrame implements Runnable, ThreadFactory {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         getContentPane().setLayout(null);
         Dimension size = WebcamResolution.QVGA.getSize();
-        webcam = Webcam.getWebcams().get(0);
+        webcam = Webcam.getWebcam().get(0);
         webcam.setViewSize(size);
 
         panel = new WebcamPanel(webcam);
@@ -94,11 +94,11 @@ public class ACMQR extends JFrame implements Runnable, ThreadFactory {
 
                 try {
                     result = new MultiFormatReader().decode(bitmap);
-                } catch (NotFoundException e) { //no qr code found
+                } catch (NotFoundException e) { 
                 }
                 
                 if (result != null) {
-                    DB db = new DB();
+                    DB db = new DB(System.In);
                     try {
                         db.register(result.getText(), "Dummy"); 
                         checkAttendance(result.getText());
@@ -106,7 +106,7 @@ public class ACMQR extends JFrame implements Runnable, ThreadFactory {
                         JOptionPane.showMessageDialog(null, "Error: \""+result.getText()+"\" not in database.");
                         ex.printStackTrace();
                     }
-                    //JOptionPane.showMessageDialog(null, result.getText());
+               
                 }
             }
         } while (true);
@@ -116,7 +116,7 @@ public class ACMQR extends JFrame implements Runnable, ThreadFactory {
         try {
 			label.setText("Name: "+DB.getName(uid));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		}
     }
